@@ -11,6 +11,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
 
 import it.polito.tdp.borders.db.BordersDAO;
 
@@ -70,5 +72,37 @@ public class Model {
 		
 		Collections.sort(confini);
 		return confini;
+	}
+	
+	/* ALBERO DI VISITA */
+	/* Visita del grafo a partire dallo stato scelto dall'utente nell'interfaccia grafica. Si utilizza:
+	 	1) iteratore che visita il grafo in AMPIEZZA, partendo dallo stato selezionato */
+	public Map<Country,Country> visitaGrafo(Country partenzaScelta) {
+		GraphIterator<Country,DefaultEdge> visita = new BreadthFirstIterator<>(this.grafo,partenzaScelta);
+		
+		Map<Country,Country> alberoInverso = new HashMap<Country,Country>();
+		alberoInverso.put(partenzaScelta, null);	// padre della partenza non esiste, null (non e' stato scoperto da nessuno)
+		
+		visita.addTraversalListener(new RegistraAlberoInverso(alberoInverso,this.grafo));
+		while(visita.hasNext()) {
+			Country prossimo = visita.next();
+		}
+		
+		return alberoInverso;
+	}
+	
+	public List<Country> calcolaPercorso(Country partenza, Country arrivo, Year anno) {
+		creaGrafo(anno) ;
+		Map<Country,Country> alberoInverso = visitaGrafo(partenza);
+		
+		Country corrente = arrivo ;
+		List<Country> percorso = new ArrayList<>() ;
+		
+		while(corrente != null) {
+			percorso.add(0, corrente);
+			corrente = alberoInverso.get(corrente) ;
+		}
+		
+		return percorso ;
 	}
 }

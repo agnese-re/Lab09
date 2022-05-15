@@ -49,7 +49,9 @@ public class FXMLController {
 
     @FXML
     void handleStatiRaggiungibili(ActionEvent event) {
-
+    	Country countryScelto = cmbStato.getValue();
+    	// controllo stato scelto diverso da null
+    	model.calcolaPercorso();
     }
     
     @FXML // This method is called by the FXMLLoader when initialization is complete
