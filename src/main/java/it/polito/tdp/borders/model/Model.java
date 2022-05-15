@@ -1,6 +1,8 @@
 package it.polito.tdp.borders.model;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +41,11 @@ public class Model {
 		getAllCountries();
 		BordersDAO bordersDao = new BordersDAO();
 		List<Integer> codiceStati = bordersDao.getCountriesCodeYear(anno);
-		for(Integer code: codiceStati)
+		vertici = new ArrayList<Country>();
+		for(Integer code: codiceStati) {
+			vertici.add(countriesIdMap.get(code));
 			grafo.addVertex(countriesIdMap.get(code));
+		}
 		
 		List<Border> confini = bordersDao.getCountryPairs(anno);
 		for(Border border: confini)
@@ -49,5 +54,16 @@ public class Model {
 		
 		return String.format("Creato grafo con %d vertici e %d archi",grafo.vertexSet().size(),grafo.edgeSet().size());
 		
+	}
+	
+	public List<Confine> elencoStati(Year anno) {
+		
+		List<Confine> confini = new ArrayList<Confine>();
+		
+		for(Country c: vertici)
+			confini.add(new Confine(c,grafo.edgesOf(c).size()));
+		
+		Collections.sort(confini);
+		return confini;
 	}
 }

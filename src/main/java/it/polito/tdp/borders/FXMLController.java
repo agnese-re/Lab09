@@ -3,8 +3,10 @@ package it.polito.tdp.borders;
 
 import java.net.URL;
 import java.time.Year;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.borders.model.Confine;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +34,11 @@ public class FXMLController {
     	String annoStringa = txtAnno.getText();
     	// controlli anno stringa
     	String msg = model.creaGrafo(Year.of(Integer.parseInt(annoStringa)));
-    	txtResult.appendText(msg);
+    	txtResult.appendText(msg+"\n");
+    	
+    	List<Confine> confini = model.elencoStati(Year.of(Integer.parseInt(annoStringa)));
+    	for(Confine c: confini)
+    		txtResult.appendText(c.toString()+"\n");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
