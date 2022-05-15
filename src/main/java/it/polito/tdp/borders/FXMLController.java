@@ -2,6 +2,7 @@
 package it.polito.tdp.borders;
 
 import java.net.URL;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.borders.model.Model;
@@ -28,7 +29,10 @@ public class FXMLController {
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
-
+    	String annoStringa = txtAnno.getText();
+    	// controlli anno stringa
+    	String msg = model.creaGrafo(Year.of(Integer.parseInt(annoStringa)));
+    	txtResult.appendText(msg);
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
