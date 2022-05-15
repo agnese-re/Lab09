@@ -56,6 +56,11 @@ public class Model {
 		
 	}
 	
+	public List<Country> getCountries(Year anno) {
+		Collections.sort(vertici);
+		return vertici;
+	}
+	
 	public List<Confine> elencoStati(Year anno) {
 		
 		List<Confine> confini = new ArrayList<Confine>();
